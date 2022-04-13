@@ -18,3 +18,4 @@ This repo contains several common big data exercises.
     #from the repository root
     mvn test
  
+ this is a Test
