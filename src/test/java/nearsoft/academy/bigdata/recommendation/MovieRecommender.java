@@ -9,96 +9,79 @@ import java.io.FileReader;
 
 public class MovieRecommender {
 
-
-    ArrayList<Review> listaDeReviews = new ArrayList<>();
-    int contadorDeReviews = 0;
+    private ArrayList<Review> reviewList = new ArrayList<>();
+    private Set<String> products = new HashSet<String>();
+    private Set<String> users = new HashSet<String>();
     public MovieRecommender(String filepath ) {
 
-       try{
+        try{
             FileReader fr = new FileReader(filepath);
             BufferedReader br = new BufferedReader(fr);
 
-            String nuevaLinea;
+            String newLine;
 
-            Review objeto = new Review();
-            while ((nuevaLinea = br.readLine()) != null) {
+            Review object = new Review();
 
-                String words[] = nuevaLinea.split(" ");
+            while ((newLine = br.readLine()) != null) {
 
-                if (words[0].equals("product/productId:")) {
-                    objeto.setProductId(words[1]);
+                String words[] = newLine.split(":");
+
+                if (words[0].equals("product/productId")) {
+
+                    reviewList.add(object);
+                    object = new Review();
+
+                    object.setProductId(words[1].trim());
+                    products.add(words[1].trim());
+
                 }
 
-                if (words[0].equals("review/userId:")) {
-                    objeto.setUserId(words[1]);
-                }
+               else if (words[0].equals("review/userId")) {
 
-                if (nuevaLinea.isEmpty()) {
-                    listaDeReviews.add(objeto);
-                    objeto = new Review();
-                }
+                    object.setUserId(words[1].trim());
 
-                if (words[0].equals("review/summary:")) {
-                    contadorDeReviews++;
+                    users.add(words[1].trim());
+
                 }
             }
+
         }catch(Exception ex){
-            System.out.println("no existe archivo en la ruta");
+            System.out.println("there is no file in the path");
         }
     }
 
     public int getTotalReviews() {
-        //return listaDeReviews.size();
-        //return 7911684;
-        return contadorDeReviews;
+
+        return reviewList.size();
+
     }
 
     public int getTotalProducts() {
-        /*
-        ArrayList<String> productos = new ArrayList();
 
-        for (int i=0; i<listaDeReviews.size(); i++) {
+        return products.size();
 
-            productos.add(listaDeReviews.get(i).getProductId());
-            Set<String> hashset = new HashSet<String>(productos);
-            productos.clear();
-            productos.addAll(hashset);
-
-        }
-        return productos.size(); */
-      return 253059;
     }
 
     public int getTotalUsers() {
 
-        ArrayList<String> usuarios = new ArrayList();
+        return users.size();
 
-        for (int i=0; i<listaDeReviews.size(); i++) {
-
-            usuarios.add(listaDeReviews.get(i).getUserId());
-
-            Set<String> hashset = new HashSet<String>(usuarios);
-            usuarios.clear();
-            usuarios.addAll(hashset);
-
-        }
-        return usuarios.size();
-        //return 889176;
     }
 
     public List<String> getRecommendationsForUser(String userId) {
 
-       // ArrayList<String> productos = new ArrayList<>();
-        List<String> productos = new ArrayList<String>();
-        productos.add("B0002O7Y8U");
-        productos.add("B00004CQTF");
-        productos.add("B000063W82");
-     //   for (int i=0; i<listaDeReviews.size(); i++) {
+        List<String> productlist = new ArrayList<String>();
 
-       //     if (Objects.equals(userId, listaDeReviews.get(i).getUserId())) {
-      //          productos.add(listaDeReviews.get(i).getProductId());
-      //      }
-       // }
-        return productos;
+           for (int i=0; i<reviewList.size(); i++) {
+
+               String username = reviewList.get(i).getUserId();
+
+                  if(Objects.equals(username, userId)){
+
+             productlist.add(reviewList.get(i).getProductId());
+          }
+
+         }
+        return productlist;
     }
 }
