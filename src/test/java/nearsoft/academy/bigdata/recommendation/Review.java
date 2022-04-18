@@ -3,11 +3,21 @@ package nearsoft.academy.bigdata.recommendation;
 public class Review {
     private String productId;
     private String userId;
+    private String score;
 
 
     public Review(){
 
         }
+
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
 
     public String getProductId() {
         return productId;
