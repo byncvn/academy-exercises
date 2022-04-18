@@ -15,6 +15,11 @@ This repo contains several common big data exercises.
  
 ## How to run tests
 
-    #from the repository root
+    Download the file movies.txt
+    http://snap.stanford.edu/data/web-Movies.html
+    
+    Write the filepath of movies.txt in the line 18 of MovieRecommenderTest.java
+
+    In console type
     mvn test
  
